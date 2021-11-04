@@ -130,3 +130,6 @@ dmypy.json
 
 # crawled data
 web_crawling/crawled_data
+
+# vscode
+.vscode

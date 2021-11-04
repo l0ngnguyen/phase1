@@ -12,17 +12,14 @@ def clean_text(text):
     return remove_tags(text).strip()
 
 class ArticleItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    url = scrapy.Field()
-    publisher = scrapy.Field()
-    datetime = scrapy.Field()
-    title = scrapy.Field()
-    body = scrapy.Field(input=MapCompose(lambda paragraphs: [clean_text(p) for p in paragraphs]))
-    category = scrapy.Field()
-    writers = scrapy.Field(input=MapCompose(clean_text))
+    url = scrapy.Field(output_processor=TakeFirst())
+    publisher = scrapy.Field(output_processor=TakeFirst())
+    datetime = scrapy.Field(output_processor=TakeFirst())
+    title = scrapy.Field(output_processor=TakeFirst())
+    body = scrapy.Field(input_processor=MapCompose(clean_text))
+    category = scrapy.Field(output_processor=TakeFirst())
+    writers = scrapy.Field(input_processor=MapCompose(clean_text), output_processor=TakeFirst())
     tags = scrapy.Field()
 
 if __name__ == '__main__':
-    doc = '<div class="author">\r\n            <i class="icon-pencil"></i>MINH ANH\r\n        </div>'
-    print(remove_tags(doc).strip())
+    pass

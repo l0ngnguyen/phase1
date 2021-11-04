@@ -14,7 +14,7 @@ def get_dates_between(start_date, end_date):
     
     return dates
 
-START_DATE = date(2021, 10, 29)
+START_DATE = date(2021, 11, 2)
 END_DATE = datetime.now().date()
 
 
@@ -45,18 +45,18 @@ class TuoitreSpider(scrapy.Spider):
         yield from response.follow_all(css='h3.title-news a', callback=self.parse_details)
 
     def parse_details(self, response):
-        item = ArticleItem()
+        loader = ItemLoader(item=ArticleItem(), selector=response)
 
-        item['url'] = response.url
-        item['publisher'] = 'Tuổi trẻ' 
-        item['datetime'] = response.css('div.date-time::text').get()
-        item['title'] = response.css('h1.article-title::text').get()
-        item['body'] = response.css('#main-detail-body > p').getall()
-        item['category'] = response.css('div.bread-crumbs.fl > ul > li.fl > a::text').get()
-        item['writers'] = response.css('div.author').get()
-        item['tags'] = response.css('li.tags-item a::text').getall()
+        loader.add_value('url', response.url)
+        loader.add_value('publisher', 'Tuổi trẻ')
+        loader.add_css('datetime', 'div.date-time::text')
+        loader.add_value('title', 'h1.article-title::text')
+        loader.add_css('body', '#main-detail-body > p')
+        loader.add_css('category', 'div.bread-crumbs.fl > ul > li.fl > a::text')
+        loader.add_css('writers', 'div.author')
+        loader.add_css('tags', 'li.tags-item a::text')
 
-        yield item
+        yield loader.load_item()
 
 if __name__ == '__main__':
     print(END_DATE)
