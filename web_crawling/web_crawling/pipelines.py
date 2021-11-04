@@ -6,8 +6,12 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+import sqlalchemy
 
 
-class WebCrawlingPipeline:
+class TuoitrePipeline:
     def process_item(self, item, spider):
         return item
+
+class TuoitreDailyPipeline:
+    pass 

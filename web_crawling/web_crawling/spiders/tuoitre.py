@@ -34,6 +34,11 @@ categories = [
 
 class TuoitreSpider(scrapy.Spider):
     name = 'tuoitre'
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'web_crawling.pipelines.TuoitrePipeline': 400
+        }
+    }
 
     def start_requests(self):
         for cat in categories:

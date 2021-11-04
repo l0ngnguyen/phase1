@@ -5,7 +5,7 @@
 
 import scrapy
 from scrapy.loader import ItemLoader
-from itemloaders.processors import TakeFirst, MapCompose
+from itemloaders.processors import TakeFirst, MapCompose, Join
 from w3lib.html import remove_tags
 
 def clean_text(text):
@@ -16,7 +16,7 @@ class ArticleItem(scrapy.Item):
     publisher = scrapy.Field(output_processor=TakeFirst())
     datetime = scrapy.Field(output_processor=TakeFirst())
     title = scrapy.Field(output_processor=TakeFirst())
-    body = scrapy.Field(input_processor=MapCompose(clean_text))
+    body = scrapy.Field(input_processor=MapCompose(clean_text), output_processor=Join('\n'))
     category = scrapy.Field(output_processor=TakeFirst())
     writers = scrapy.Field(input_processor=MapCompose(clean_text), output_processor=TakeFirst())
     tags = scrapy.Field()
